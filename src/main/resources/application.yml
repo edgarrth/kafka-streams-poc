@@ -1,0 +1,29 @@
+server:
+  port: 8181
+
+spring:
+  kafka:
+    streams:
+      topics:
+        input-topic: input.topic
+        output-topic: output.topic
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      application-id: ${APPLICATION_ID:poc-kafka-stream}
+      cache-max-size-buffering: 1048576
+      cleanup.on-shutdown: ${CLEANUP_ON_SHUTDOWN:false}
+      properties:
+        group-id: ${APPLICATION_ID:poc-kafka-stream}
+        replication: 1
+        max:
+          poll:
+            records: 50
+        commit:
+          interval:
+            ms: 100
+        default:
+          key:
+            serde: org.apache.kafka.common.serialization.Serde
+          value:
+            serde: org.apache.kafka.common.serialization.Serde
+  profiles:
+    active: local
