@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ks-poc-kafka-streams
+    #namespace: ks-dev
+data:
+  application.yaml: |-
+    messaging-config:
+      topics:
+        -
+          name: input.topic
+        -
+          name: output.topic
+        -
+          name: output.topic.dev
+        -
+          name: output.topic.lt
+
+    spring:
+      kafka:
+        streams:
+          bootstrap-servers: #172.17.0.1:9093
+            - broker1-kafka.dev.peigo.com.ec:9094
+            - broker2-kafka.dev.peigo.com.ec:9094
+            - broker3-kafka.dev.peigo.com.ec:9094
+          application-id: ks-poc-kafka-streams
+          cache-max-size-buffering: 1048576
+          cleanup.on-shutdown: false
+          properties:
+            group-id: ks-poc-kafka-streams
+            replication: 1
+            max:
+              poll:
+                records: 50
+            commit:
+              interval:
+                ms: 100
+            default:
+              key:
+                serde: org.apache.kafka.common.serialization.Serde
+              value:
+                serde: org.apache.kafka.common.serialization.Serde

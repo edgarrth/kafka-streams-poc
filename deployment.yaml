@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ks-poc-kafka-streams-svc
+spec:
+  selector:
+    app: ks-poc-kafka-streams
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ks-poc-kafka-streams
+spec:
+  selector:
+    matchLabels:
+      app: ks-poc-kafka-streams
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ks-poc-kafka-streams
+    spec:
+      containers:
+        - name: ks-poc-kafka-streams
+          image: poc-stream-kk:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
