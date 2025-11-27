@@ -1,0 +1,20 @@
+info:
+  project:
+    name: template-kafka-streams
+    description: Prueba de Concepto de Streams
+spring:
+  output:
+    ansi:
+      enabled: always
+  cloud:
+    kubernetes:
+      enabled: false
+      secrets:
+        enabled: false
+      discovery:
+        enabled: false
+      reload:
+        enabled: false
+        monitoring-config-maps: false
+  application:
+    name: ks-poc-kafka-streams

@@ -1,18 +1,31 @@
 server:
-  port: 8181
+  port: 8080
+
+messaging-config:
+  topics:
+    -
+      name: input.topic
+    -
+      name: output.topic
+    -
+      name: output.topic.dev
+    -
+      name: output.topic.lt
+
 
 spring:
   kafka:
     streams:
-      topics:
-        input-topic: input.topic
-        output-topic: output.topic
-      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-      application-id: ${APPLICATION_ID:poc-kafka-stream}
+      security:
+        protocol: SSL
+      bootstrap-servers:
+        - 192.168.18.122:9094
+      application-id: template-kafka-stream
       cache-max-size-buffering: 1048576
-      cleanup.on-shutdown: ${CLEANUP_ON_SHUTDOWN:false}
+      cleanup.on-shutdown: false
       properties:
-        group-id: ${APPLICATION_ID:poc-kafka-stream}
+        ssl.endpoint.identification.algorithm:
+        group-id: ks-poc-kafka-stream
         replication: 1
         max:
           poll:
@@ -25,5 +38,13 @@ spring:
             serde: org.apache.kafka.common.serialization.Serde
           value:
             serde: org.apache.kafka.common.serialization.Serde
+  output:
+    ansi:
+      enabled: always
+  cloud:
+    kubernetes:
+      enabled: false
+  application:
+    name: ks-poc-kafka-streams
   profiles:
     active: local
